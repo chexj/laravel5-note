@@ -28,7 +28,7 @@
 ## 5. laravel-excel 的使用
 ### 5.1 处理 Excel 文件
     $sheetData = Excel::load($filePath, function($reader){}, 'UTF-8')->noHeading()->toArray();
-+若只有一张表，那么 $sheetData 的子元素为表中一列的值  
+若只有一张表，那么 $sheetData 的子元素为表中一列的值  
 格式为:
     
     $sheetData = array(
@@ -41,9 +41,10 @@
             '1' => '第二行的第二个值',
         )
     );
-+若是多张表，那么 sheetData 的子元素为每张表的值  
-格式为：
     
+若是多张表，那么 sheetData 的子元素为每张表的值  
+格式为：
+
     $sheetData = array(
         '0' = array(
             '0' => array(
