@@ -28,9 +28,9 @@
 ## 5. laravel-excel 的使用
 ### 5.1 处理 Excel 文件
     $sheetData = Excel::load($filePath, function($reader){}, 'UTF-8')->noHeading()->toArray();
-PS: 
-若只有一张表，那么 $sheetData 的子元素为表中一列的值
-格式为： 
+若只有一张表，那么 $sheetData 的子元素为表中一列的值  
+格式为:
+    
     $sheetData = array(
         '0' = array(
             '0' => '第一行的第一个值',
@@ -41,8 +41,10 @@ PS:
             '1' => '第二行的第二个值',
         )
     );
-若是多张表，那么 sheetData 的子元素为每张表的值
+    
+若是多张表，那么 sheetData 的子元素为每张表的值  
 格式为：
+
     $sheetData = array(
         '0' = array(
             '0' => array(
@@ -79,7 +81,7 @@ PS:
             $sheet->rows($cellData);
         });
     })->store('xls')->export('xls');
-PS:
-iconv('UTF-8', 'GBK', $fileName)  ---防止文件名乱码
-->store('xls')        --- 将生成的文件存储在服务器端
-->export('xls')       --- 将生成的文件返回给用户（浏览器打开的话会下载该文件）
+PS:  
++ iconv('UTF-8', 'GBK', $fileName)  ---防止文件名乱码  
++ ->store('xls')        --- 将生成的文件存储在服务器端  
++ ->export('xls')       --- 将生成的文件返回给用户（浏览器打开的话会下载该文件）
