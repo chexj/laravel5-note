@@ -1,7 +1,7 @@
 1. 引入 Bootstrap  
 <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
 
-2. <div class="container-fluid"></div>
+2. ```html<div class="container-fluid"></div>```
 3. <img class="img-responsive">
 
 
