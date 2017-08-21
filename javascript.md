@@ -37,3 +37,21 @@ function queue(arr, item){
     arr.push(item);
     return arr.shift();
 }
+8. 如果switch语句中的case分支的break 语句漏掉了，后面的 case语句会一直执行直到遇到break。  
+switch(val){
+    case 1:
+    case 2:
+    case 3:
+      answer = 'Low';
+      break;
+    case 4:
+    case 5:
+    case 6:
+      answer = 'Mid';
+      break;
+    case 7:
+    case 8:
+    case 9:
+      answer = 'High';
+      break;
+  }
