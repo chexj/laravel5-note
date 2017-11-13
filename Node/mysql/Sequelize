@@ -1,0 +1,3 @@
+(async () => {
+    var pets = await Pet.findAll();
+})();

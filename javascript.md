@@ -55,3 +55,10 @@ switch(val){
       answer = 'High';
       break;
   }
+9.  访问 JS 对象的属性 1.obj.prop 2.使用 obj['prop'] 3.使用变量访问 obj[val]
+10. 更改 JS 对象的属性 obj.prop = 'a new val';
+11. 增加 JS 对象的属性 obj.newProp = 'val';
+12. 删除 JS 对象的属性 : delete obj.prop;
+13. 检测一个 JS 对象是否存在 obj.hasOwnProperty('prop'); 存在返回 true; 否则返回 false;
+14. JavaScript Object Notation --- JSON
+15. Math.floor(Math.random() * (max - min +1)) + min  -- min 到 max 之间所有的整数，包括 min 和 max

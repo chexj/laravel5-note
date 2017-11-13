@@ -1,0 +1,104 @@
+Laravel 5.5 --- 新版特性
+概述：
+    laravel 5.5 是一个 LTS(LongTimeSupport) 版本.
+    laravel 5.5 新增了
+    $new = array(
+        包自动检测功能, 
+        API资源/转化, 
+        自动注册控制台命令, 
+        队列任务链, 
+        队列任务速率限制, 
+        基于时间的任务尝试, 
+        可渲染的邮件, 
+        可渲染和报告的异常, 
+        更加一致的异常处理, 
+        数据库测试优化, 
+        更简单的验证规则自定义, 
+        React 预置, 
+        Route::view 和 Route::redirect方法, 
+        Memacached 和 Redis 缓存驱动'锁',
+        按需通知,
+        Dusk无痛感支持Chrome,
+        方便的Blade快捷键,
+        优化信任的代理支持,
+        Laravel Horizon,
+    );
+
+Laravel Horizon:
+Horizon 为基于 Redis 的 Laravel 队列提供了一个美观的后台和代码驱动的配置。
+Horizon 允许你轻松监控队列系统的关键指标，例如人物吞吐量、运行时和失败任务。
+所有任务进程配置都存放在一个简单独立的配置文件中，从而允许你的配置保存在源码控制系统中以便整个团队的协作。
+
+包自动发现：
+在之前版本的 Laravel 中,安装一个扩展包通常需要多个添加步骤，例如注册服务提供者到 app 配置文件，并注册相应的门面。不过，从 Laravel 5.5 开始，Laravel 可以自动发现并未注册服务提供者和门面。
+例如，你可以通过安装大名鼎鼎的 barryvdh/laravel-debugbar 扩展包到 Laravel 应用来体验这个新功能。通过 Composer 安装完成后，无需任何额外配置，调试条就可以成效：
+    composer require barryvdh/laravel-debugbar
+扩展包开发者只需要添加自己的服务器提供者和门面到包中的 composer.json 文件即可
+    "extra" {
+        "laravel": {
+            "providers": [
+                "Laravel\\Thinker\\ThinkServiceProvider"
+            ]
+        }
+    }
+
+API资源
+构建一个 API 时，你可能需要在 Eloquent 模型和真正返回给应用用户的 JSON 相应之间有一个转化层， Laravel 的资源类允许你简单、优雅地将模型和模型集合转化为 JSON。
+一个资源类标识一个需要被转化为 JSON 结构的模型，例如，下面是一个简单的 User 资源类：
+    <?php
+        namespace App\Http\Resources;
+        use Illuminate\Http\Resources\Json\Resource;
+        class User extends Resource
+        {
+            /**
+            * Transform the resource into an array.
+            * 
+            * @param \Illuminate\Http\Request
+            * @return array
+            */
+            public function toArray($request){
+                return [
+                    'id' => $this->id,
+                    'name' => $this->name,
+                    'email' => $this->email,
+                    'created_at' => $this->created_at,
+                    'updated_at' => $this->updated_at,
+                ];
+            }
+        }
+    ?>
+
+控制台命令自动注册：
+当创建新的控制台命令时，在 kernel 的 commands 方法中调用一个新的 load 方法，该方法会检索给定目录下的所有控制台命令并自动注册它们。
+    /**
+    * Register the commands for the application.
+    * 
+    * @return void
+    */
+    protected function commands(){
+        $this->load(__DIR__.'/Commands');
+    }
+
+新的前端预置功能：
+Laravel 5.5 仍然内置了基本的 Vue 脚手架，除此之外我们新提供了一些前端预置组件，在一个全新的 Laravel 应用中，你可以使用 preset 命令将 Vue 脚手架切换到 React 脚手架：
+    php artisan preset React
+也可以使用none来移除整个 JavaScript 和 CSS 框架脚手架。
+    php artisan preset none
+
+队列任务链：
+任务链允许你制定需要在一个序列中运行的队列任务列表，如果这个序列中的某个任务运行失败了，那么剩下的任务就不会再执行，要执行一个队列任务链，你可以在任意分发任务中使用 withChain
+    ProvisionServer::withChain([
+        new InstallNginx,
+        new InstallPhp
+    ])->dispatch();
+
+队列任务频率限制：
+    如果你的应用队列使用的是 Redis, 现在起你可以通过时间或者并发量来控制队列任务的执行。该功能在队列任务调用了同样设置频率限制的 API 时很有用，例如，你可以设置指定类型的任务每分钟运行 10 次。
+    Redis::throttle('key')->allow(10)->every(60)->then(function(){
+        // Job logic ...
+    }), function (){
+        // Could not obtain lock ...
+
+        return $this->release(10);
+    }
+    
